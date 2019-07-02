@@ -253,13 +253,13 @@ open class FoundationStream : NSObject, WSStream, StreamDelegate  {
     }
     
     public func cleanup() {
-        workQueue.async { [weak self] in 
-            if let stream = self?.inputStream {
+        workQueue.async { 
+            if let stream = self.inputStream {
                 stream.delegate = nil
                 CFReadStreamSetDispatchQueue(stream, nil)
                 stream.close()
             }
-            if let stream = self?.outputStream {
+            if let stream = self.outputStream {
                 stream.delegate = nil
                 CFWriteStreamSetDispatchQueue(stream, nil)
                 stream.close()
