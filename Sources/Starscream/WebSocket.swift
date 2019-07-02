@@ -264,8 +264,8 @@ open class FoundationStream : NSObject, WSStream, StreamDelegate  {
                 CFWriteStreamSetDispatchQueue(stream, nil)
                 stream.close()
             }
-            self?.outputStream = nil
-            self?.inputStream = nil
+            self.outputStream = nil
+            self.inputStream = nil
         }
     }
     
