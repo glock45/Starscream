@@ -140,8 +140,8 @@ open class FoundationStream : NSObject, WSStream, StreamDelegate  {
     private var outputStream: OutputStream?
     public weak var delegate: WSStreamDelegate?
     let BUFFER_MAX = 4096
-	
-	public var enableSOCKSProxy = false
+    
+    public var enableSOCKSProxy = false
     
     public func connect(url: URL, port: Int, timeout: TimeInterval, ssl: SSLSettings, completion: @escaping ((Error?) -> Void)) {
         var readStream: Unmanaged<CFReadStream>?
@@ -253,15 +253,15 @@ open class FoundationStream : NSObject, WSStream, StreamDelegate  {
     }
     
     public func cleanup() {
-        workQueue.async { 
+        workQueue.async {
             if let stream = self.inputStream {
-                stream.delegate = nil
                 CFReadStreamSetDispatchQueue(stream, nil)
+                stream.delegate = nil
                 stream.close()
             }
             if let stream = self.outputStream {
-                stream.delegate = nil
                 CFWriteStreamSetDispatchQueue(stream, nil)
+                stream.delegate = nil
                 stream.close()
             }
             self.outputStream = nil
