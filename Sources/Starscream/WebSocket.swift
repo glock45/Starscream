@@ -725,11 +725,10 @@ open class WebSocket : NSObject, StreamDelegate, WebSocketClient, WSStreamDelega
      Disconnect the stream object and notifies the delegate.
      */
     private func disconnectStream(_ error: Error?, runDelegate: Bool = true) {
-        if error == nil {
-            writeQueue.waitUntilAllOperationsAreFinished()
-        } else {
+        if error != nil {
             writeQueue.cancelAllOperations()
         }
+        writeQueue.waitUntilAllOperationsAreFinished()
         
         mutex.lock()
         cleanupStream()
@@ -1267,6 +1266,7 @@ open class WebSocket : NSObject, StreamDelegate, WebSocketClient, WSStreamDelega
                 }
                 let stream = self.stream
                 let writeBuffer = UnsafeRawPointer(frame!.bytes+total).assumingMemoryBound(to: UInt8.self)
+                guard self.isConnected else { return }
                 let len = stream.write(data: Data(bytes: writeBuffer, count: offset-total))
                 if len <= 0 {
                     self.doDisconnect(WSError(type: .outputStreamWriteError, message: "output stream had an error during write", code: 0))
